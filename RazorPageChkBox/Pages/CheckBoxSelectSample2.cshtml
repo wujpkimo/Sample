@@ -1,0 +1,44 @@
+﻿@page "{p?}"
+@model RazorPageChkBox.Pages.CheckBoxSelectSample2Model
+@{
+}
+@using X.PagedList.Mvc.Core; //import this so we get our HTML Helper
+@using X.PagedList; //import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)
+@using X.PagedList.Web.Common
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<form method="post">
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Dispatched</th>
+        </tr>
+        @foreach (var order in Model.DataByPage)
+        {
+            <tr>
+                <td>
+                    <input type="hidden" name="OrdersThisWeek.Index" value="@order.OrderId" />
+                    <input type="hidden" name="OrdersThisWeek[@order.OrderId].OrderId" value="@order.OrderId" />
+                    @order.OrderId
+                </td>
+                <td>
+                    <input type="hidden" name="OrdersThisWeek[@order.OrderId].Customer" value="@order.Customer" />
+                    @order.Customer
+                </td>
+                <td>
+                    <input type="hidden" name="OrdersThisWeek[@order.OrderId].OrderDate" value="@order.OrderDate" />
+                    @order.OrderDate.ToShortDateString()</td>
+                <td><input type="checkbox" name="OrdersThisWeek[@order.OrderId].Dispatched" value="true" /></td>
+            </tr>
+        }
+    </table>
+    @Html.PagedListPager((IPagedList)Model.DataByPage, page => Url.Page("CheckBoxSelectSample2",
+        new { p = page}),
+        new PagedListRenderOptions {
+            LiElementClasses = new string[] { "page-item" }
+            ,PageClasses = new string[] { "page-link" }
+        })
+    <button>Update</button>
+</form>

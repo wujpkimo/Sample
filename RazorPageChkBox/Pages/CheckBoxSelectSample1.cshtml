@@ -1,0 +1,36 @@
+﻿@page
+@model RazorPageChkBox.Pages.CheckBoxSelectSample1Model
+@{
+}
+
+<form method="post">
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Dispatched</th>
+        </tr>
+        @foreach (var order in Model.OrdersThisWeek)
+        {
+            <tr>
+                <td>
+                    <input type="hidden" name="OrdersThisWeek.Index" value="@order.OrderId" />
+                    <input type="hidden" name="OrdersThisWeek[@order.OrderId].OrderId" value="@order.OrderId" />
+                    @order.OrderId
+                </td>
+                <td>
+                    <input type="hidden" name="OrdersThisWeek[@order.OrderId].Customer" value="@order.Customer" />
+                    @order.Customer
+                </td>
+                <td>
+                    <input type="hidden" name="OrdersThisWeek[@order.OrderId].OrderDate" value="@order.OrderDate" />
+                    @order.OrderDate.ToShortDateString()</td>
+                <td>
+                    <input type="checkbox" name="OrdersThisWeek[@order.OrderId].Dispatched" value="true" />
+                    </td>
+            </tr>
+        }
+    </table>
+    <button>Update</button>
+</form>

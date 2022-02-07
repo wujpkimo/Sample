@@ -1,0 +1,43 @@
+﻿@page "{p?}"
+@model RazorPageChkBox.Pages.CheckBoxSelectSample3Model
+@{
+}
+@using X.PagedList.Mvc.Core; //import this so we get our HTML Helper
+@using X.PagedList; //import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)
+@using X.PagedList.Web.Common
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<form method="post">
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Dispatched</th>
+        </tr>
+        
+        @for (var i = 0; i < Model.DataByPage.Count(); i++)
+        {
+            <tr>
+                <td>
+                    <input type="hidden" asp-for="OrdersThisWeek.First(w=>w.OrderId==Model.DataByPage[i].OrderId).OrderId" />
+                    @Model.DataByPage[i].OrderId
+                </td>
+                <td>
+                    <input type="hidden" asp-for="OrdersThisWeek.First(w=>w.OrderId==Model.DataByPage[i].OrderId).Customer" />
+                    @Model.DataByPage[i].Customer</td>
+                <td>
+                    <input type="hidden" asp-for="OrdersThisWeek.First(w=>w.OrderId==Model.DataByPage[i].OrderId).OrderDate" />
+                    @Model.DataByPage[i].OrderDate.ToShortDateString()</td>
+                <td><input asp-for="OrdersThisWeek.First(w=>w.OrderId==Model.DataByPage[i].OrderId).Dispatched" /></td>
+            </tr>
+        }
+    </table>
+    @Html.PagedListPager((IPagedList)Model.DataByPage, page => Url.Page("CheckBoxSelectSample3",
+        new { p = page}),
+        new PagedListRenderOptions {
+            LiElementClasses = new string[] { "page-item" }
+            ,PageClasses = new string[] { "page-link" }
+        })
+    <button>Update</button>
+</form>

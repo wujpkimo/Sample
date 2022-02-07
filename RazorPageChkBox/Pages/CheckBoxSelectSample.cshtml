@@ -1,0 +1,32 @@
+﻿@page
+@model RazorPageChkBox.Pages.CheckBoxSelectSampleModel
+@{
+}
+
+<form method="post">
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Dispatched</th>
+        </tr>
+        @for (var i = 0; i < Model.OrdersThisWeek.Count(); i++)
+        {
+            <tr>
+                <td>
+                    <input type="hidden" asp-for="OrdersThisWeek[i].OrderId" />
+                    @Model.OrdersThisWeek[i].OrderId
+                </td>
+                <td>
+                    <input type="hidden" asp-for="OrdersThisWeek[i].Customer" />
+                    @Model.OrdersThisWeek[i].Customer</td>
+                <td>
+                    <input type="hidden" asp-for="OrdersThisWeek[i].OrderDate" />
+                    @Model.OrdersThisWeek[i].OrderDate.ToShortDateString()</td>
+                <td><input asp-for="OrdersThisWeek[i].Dispatched" /></td>
+            </tr>
+        }
+    </table>
+    <button>Update</button>
+</form>
